@@ -73,8 +73,8 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				SetPosition(ResultPosition);
 				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+				SetPosition(ResultPosition);
 				MoveDirection = EDirection::None;
 				IsMoving = false;
 			}
@@ -92,6 +92,7 @@ void Player::Tick(float deltaTime)
 			if (!(TargetPosition == ResultPosition))
 			{
 				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+				SetPosition(ResultPosition);
 				MoveDirection = EDirection::None;
 				IsMoving = false;
 			}
@@ -109,6 +110,7 @@ void Player::Tick(float deltaTime)
 			if (!(TargetPosition == ResultPosition))
 			{
 				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+				SetPosition(ResultPosition);
 				MoveDirection = EDirection::None;
 				IsMoving = false;
 			}
@@ -126,6 +128,7 @@ void Player::Tick(float deltaTime)
 			if (!(TargetPosition == ResultPosition))
 			{
 				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+				SetPosition(ResultPosition);
 				MoveDirection = EDirection::None;
 				IsMoving = false;
 			}

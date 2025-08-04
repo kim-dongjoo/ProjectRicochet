@@ -30,9 +30,6 @@
     <ClCompile Include="Actor\Box.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\Target.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Game.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Actor\Box.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor\Target.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Game\Game.h">

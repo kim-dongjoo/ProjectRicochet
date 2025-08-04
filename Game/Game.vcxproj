@@ -179,7 +179,6 @@ xcopy $(SolutionDir)\Contents $(OutDir)..\Contents\ /y</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Wall.cpp" />
-    <ClCompile Include="Actor\Target.cpp" />
     <ClCompile Include="Level\RicochetLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -191,7 +190,6 @@ xcopy $(SolutionDir)\Contents $(OutDir)..\Contents\ /y</Command>
     <ClInclude Include="Level\MenuLevel.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Wall.h" />
-    <ClInclude Include="Actor\Target.h" />
     <ClInclude Include="Level\RicochetLevel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

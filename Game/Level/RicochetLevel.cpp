@@ -180,7 +180,7 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 			for (Actor* const actor : actors)
 			{
 				// Ãæµ¹
-				if (actor->GetPosition() == NextPosition && actor->As<Wall>())
+				if ((actor->GetPosition() == NextPosition) && actor->As<Wall>())
 				{
 					NextPosition.x += 1.0f;
 					return NextPosition;
