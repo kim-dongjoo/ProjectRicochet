@@ -23,7 +23,7 @@ private:
 	// 이동 중인지
 	bool IsMoving = false;
 
-	int MoveCount = 200;
+	int MoveCount = 5;
 
 	// 환경 쿼리 인터페이스
 	class IEnvironmentQuery* EQInterface = nullptr;

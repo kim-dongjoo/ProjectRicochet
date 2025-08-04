@@ -29,7 +29,7 @@ void RicochetLevel::Render()
 
 	if (isGameClear)
 	{
-		Utils::SetConsolePosition({ 15, 15 });
+		Utils::SetConsolePosition({ 12, 23 });
 		Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
 
 		std::cout << "==== Game Clear! ====";
@@ -37,7 +37,7 @@ void RicochetLevel::Render()
 
 	if (isGameOver)
 	{
-		Utils::SetConsolePosition({ 15, 15 });
+		Utils::SetConsolePosition({ 12, 23 });
 		Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
 
 		std::cout << "==== Game Over! ====";
@@ -107,7 +107,6 @@ void RicochetLevel::ReadMapFile(const char* filename)
 		switch (mapCharacter)
 		{
 		case '#':
-		case '1':
 			SpawnActor(new Wall(position));
 			break;
 		case '.':
@@ -117,11 +116,6 @@ void RicochetLevel::ReadMapFile(const char* filename)
 			// 땅도 같이 생성
 			SpawnActor(new Ground(position));
 			SpawnActor(new Player(position));
-			break;
-		case 'b':
-			// 땅도 같이 생성
-			SpawnActor(new Ground(position));
-			SpawnActor(new Box(position));
 			break;
 		case 'G':
 			// 땅도 같이 생성
