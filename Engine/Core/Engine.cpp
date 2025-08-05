@@ -249,6 +249,4 @@ void Engine::LoadEngineSettings()
 	// ÆÄÀÏ ´İ±â
 	fclose(file);
 
-
-
 }

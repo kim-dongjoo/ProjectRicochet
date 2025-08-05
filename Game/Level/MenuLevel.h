@@ -39,6 +39,9 @@ public:
 	virtual void Render() override;
 
 private:
+	void ReadASCIIArtFile(const char* filename);
+
+private:
 	// 현재 선택된 아이템의 인덱스
 	int currentIndex = 0;
 
@@ -53,6 +56,5 @@ private:
 
 	// 메뉴 아이템 수
 	int length = 0;
-
 
 };

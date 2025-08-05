@@ -14,14 +14,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void Render() override;
 
-	// IEnvironmentQuery을(를) 통해 상속됨
+	//============== IEnvironmentQuery을(를) 통해 상속됨======================
 	virtual Vector2F FindReachablePosition(const Vector2F& FromPosition, const Vector2F& ToPosition, EDirection MoveDirection) override;
-
-	// IEnvironmentQuery을(를) 통해 상속됨
 	virtual void SetGameClear(const Vector2F& PlayerPosition) override;
-
-	// IEnvironmentQuery을(를) 통해 상속됨
 	virtual void SetGameOver() override;
+	virtual bool IsOnTrap(const Vector2F& PlayerPosition) override;
+	// =================================================================
 
 private:
 	void ReadMapFile(const char* filename);
@@ -35,4 +33,7 @@ private:
 
 	// 골 위치
 	Vector2F GoalPosition;
+
+	Vector2F PatrolStartPosition;
+	Vector2F PatrolEndPosition;
 };

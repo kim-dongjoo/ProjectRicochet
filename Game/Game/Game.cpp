@@ -7,12 +7,11 @@ Game* Game::instance = nullptr;
 
 Game::Game()
 {
-
 	instance = this;
 
 	// 메인 레벨 추가
-	// AddLevel(new SokobanLevel());
 	AddLevel(new RicochetLevel());
+	// AddLevel(new MenuLevel());
 
 	// 메뉴 레벨 생성
 	menuLevel = new MenuLevel();

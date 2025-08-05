@@ -44,3 +44,21 @@ const char* Vector2F::ToString()
     sprintf_s(value, 1024, "(%f,%f)", x, y);
     return value;
 }
+
+// 평행하지만 같은 위치는 아닌 두 위치가 입력된다고 가정.
+EDirection Vector2F::GetDirection(const Vector2F& StartPosition, const Vector2F& EndPosition)
+{
+    float DiffX = EndPosition.x - StartPosition.x;
+    float DiffY = EndPosition.y - StartPosition.y;
+
+    if (DiffX > 0.0f && DiffY == 0.0f)
+        return EDirection::RIGHT;
+    else if (DiffX < 0.0f && DiffY == 0.0f)
+        return EDirection::LEFT;
+    else if (DiffX == 0.0f && DiffY > 0.0f)
+        return EDirection::DOWN;
+    else if (DiffX == 0.0f && DiffY < 0.0f)
+        return EDirection::UP;
+
+    return EDirection::None;
+}

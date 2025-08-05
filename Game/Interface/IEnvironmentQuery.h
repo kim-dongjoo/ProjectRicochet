@@ -12,4 +12,6 @@ public:
 	virtual void SetGameClear(const Vector2F& PlayerPosition) = 0;
 
 	virtual void SetGameOver() = 0;
+
+	virtual bool IsOnTrap(const Vector2F& PlayerPosition) = 0;
 };

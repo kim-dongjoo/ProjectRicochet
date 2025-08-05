@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-Player::Player(const Vector2F& position) : Actor('R', Color::Red, position), MoveDirection(EDirection::None)
+Player::Player(const Vector2F& position) : Actor('R', Color::Green, position), MoveDirection(EDirection::None)
 {
 	SetRenderSortingOrder(3);
 }
@@ -73,10 +73,14 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
-				SetPosition(ResultPosition);
-				MoveDirection = EDirection::None;
-				IsMoving = false;
+				// 이동 벽에 충돌하지 않은 경우
+				if (!(MoveDirection == EDirection::LEFT))
+				{
+					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+					SetPosition(ResultPosition);
+					MoveDirection = EDirection::None;
+					IsMoving = false;
+				}
 			}
 		}
 		else if (MoveDirection == EDirection::LEFT)
@@ -91,10 +95,14 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
-				SetPosition(ResultPosition);
-				MoveDirection = EDirection::None;
-				IsMoving = false;
+				// 이동 벽에 충돌하지 않은 경우
+				if (!(MoveDirection == EDirection::RIGHT))
+				{
+					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+					SetPosition(ResultPosition);
+					MoveDirection = EDirection::None;
+					IsMoving = false;
+				}
 			}
 		}
 		else if (MoveDirection == EDirection::UP)
@@ -109,10 +117,14 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
-				SetPosition(ResultPosition);
-				MoveDirection = EDirection::None;
-				IsMoving = false;
+				// 이동 벽에 충돌하지 않은 경우
+				if (!(MoveDirection == EDirection::DOWN))
+				{
+					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+					SetPosition(ResultPosition);
+					MoveDirection = EDirection::None;
+					IsMoving = false;
+				}
 			}
 		}
 		else if (MoveDirection == EDirection::DOWN)
@@ -127,10 +139,14 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
-				SetPosition(ResultPosition);
-				MoveDirection = EDirection::None;
-				IsMoving = false;
+				// 이동 벽에 충돌하지 않은 경우
+				if (!(MoveDirection == EDirection::UP))
+				{
+					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
+					SetPosition(ResultPosition);
+					MoveDirection = EDirection::None;
+					IsMoving = false;
+				}
 			}
 		}
 	}
@@ -235,7 +251,12 @@ void Player::Tick(float deltaTime)
 		}
 	}
 
+	// 골에 도착했다면 게임 클리어
 	EQInterface->SetGameClear(GetPosition());
+	
+	// 트랩에 도착했다면 게임 오버
+	if (EQInterface->IsOnTrap(GetPosition()))
+		EQInterface->SetGameOver();
 }
 
 void Player::Render()
@@ -246,4 +267,9 @@ void Player::Render()
 	Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
 
 	std::cout << "남은 이동 횟수: " << MoveCount;
+}
+
+void Player::SetMoveDirection(EDirection MoveDirection)
+{
+	this->MoveDirection = MoveDirection;
 }

@@ -9,4 +9,3 @@ class Wall : public Actor
 public:
 	Wall(const Vector2F& position);
 };
-

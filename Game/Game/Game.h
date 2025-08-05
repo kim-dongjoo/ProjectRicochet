@@ -17,8 +17,6 @@ public:
 
 	static Game& GetGame();
 
-
-
 private:
 
 	// 메뉴 레벨
@@ -28,8 +26,6 @@ private:
 
 	// 현재 메뉴를 보여주고 있는지를 나타냄
 	bool showMenu = false;
-
-
 
 	static Game* instance;
 

@@ -13,6 +13,8 @@ public:
 	virtual void Tick(float deltaTime) override;
 	virtual void Render() override;
 
+	void SetMoveDirection(EDirection MoveDirection);
+
 private:
 	// 속력. 초당 몇 칸을 이동하는지
 	float MoveSpeed = 3.0f;
@@ -23,7 +25,7 @@ private:
 	// 이동 중인지
 	bool IsMoving = false;
 
-	int MoveCount = 5;
+	int MoveCount = 100;
 
 	// 환경 쿼리 인터페이스
 	class IEnvironmentQuery* EQInterface = nullptr;

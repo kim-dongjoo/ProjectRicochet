@@ -29,6 +29,7 @@ public:
 	static Vector2F Up;
 	static Vector2F Right;
 
+	static EDirection GetDirection(const Vector2F& StartPosition, const Vector2F& EndPosition);
 public:
 	// X/Y ÁÂÇ¥
 	float x = 0;

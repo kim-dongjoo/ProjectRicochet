@@ -1,9 +1,10 @@
 #include "RicochetLevel.h"
-#include "Math/Vector2.h"
+#include "Math/Vector2F.h"
 #include "Actor/Player.h"
 #include "Actor/Wall.h"
+#include "Actor/MovingWall.h"
 #include "Actor/Ground.h"
-#include "Actor/Box.h"
+#include "Actor/Trap.h"
 #include "Actor/Goal.h"
 #include "Utils/Utils.h"
 #include <cmath>
@@ -117,6 +118,22 @@ void RicochetLevel::ReadMapFile(const char* filename)
 			SpawnActor(new Ground(position));
 			SpawnActor(new Player(position));
 			break;
+		case 'X':
+			// 땅도 같이 생성
+			SpawnActor(new Ground(position));
+			SpawnActor(new Trap(position));
+			break;
+		case '(':
+			PatrolStartPosition = position;
+			SpawnActor(new Ground(position));
+			break;
+		case ')':
+			PatrolEndPosition = position;
+			SpawnActor(new Ground(position));
+
+			// MovingWall 생성
+			SpawnActor(new MovingWall(PatrolStartPosition, PatrolEndPosition, Vector2F::GetDirection(PatrolStartPosition, PatrolEndPosition)));
+			break;
 		case 'G':
 			// 땅도 같이 생성
 			SpawnActor(new Ground(position));
@@ -141,8 +158,31 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 {
 	Vector2F NextPosition = { floor(FromPosition.x), floor(FromPosition.y) };
 
+	Player* player = nullptr;
+	MovingWall* movingWall = nullptr;
+
+	for (Actor* const actor : actors)
+	{
+		if (actor->As<MovingWall>())
+			movingWall = actor->As<MovingWall>();
+
+		if (actor->As<Player>())
+			player = actor->As<Player>();
+	}
+
 	if (MoveDirection == EDirection::RIGHT)
 	{
+		// 이동 벽 충돌 체크
+		if (movingWall && movingWall->GetPosition().y == FromPosition.y)
+		{
+			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
+			if (!(movingWall->GetPosition().x + 1.0f <= FromPosition.x || movingWall->GetPosition().x >= ToPosition.x))
+			{
+				player->SetMoveDirection(EDirection::LEFT);
+				return FromPosition;
+			}
+		}
+
 		NextPosition.x += 1.0f;
 
 		// 충돌 체크
@@ -166,6 +206,17 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	}
 	else if (MoveDirection == EDirection::LEFT)
 	{
+		// 이동 벽 충돌 체크
+		if (movingWall && movingWall->GetPosition().y == FromPosition.y)
+		{
+			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
+			if (!(movingWall->GetPosition().x + 1.0f <= ToPosition.x || movingWall->GetPosition().x >= FromPosition.x))
+			{
+				player->SetMoveDirection(EDirection::RIGHT);
+				return FromPosition;
+			}
+		}
+		
 		NextPosition.x -= 1.0f;
 
 		// 충돌 체크
@@ -189,6 +240,17 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	}
 	else if (MoveDirection == EDirection::UP)
 	{
+		// 이동 벽 충돌 체크
+		if (movingWall && movingWall->GetPosition().x == FromPosition.x)
+		{
+			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
+			if (!( movingWall->GetPosition().y + 1.0f <= ToPosition.y || movingWall->GetPosition().y  >= FromPosition.y))
+			{
+				player->SetMoveDirection(EDirection::DOWN);
+				return FromPosition;
+			}
+		}
+
 		NextPosition.y -= 1.0f;
 
 		// 충돌 체크
@@ -212,6 +274,17 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	}
 	else if (MoveDirection == EDirection::DOWN)
 	{
+		// 이동 벽 충돌 체크
+		if (movingWall && movingWall->GetPosition().x == FromPosition.x)
+		{
+			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
+			if (!(movingWall->GetPosition().y >= ToPosition.y || movingWall->GetPosition().y + 1.0f <= FromPosition.y))
+			{
+				player->SetMoveDirection(EDirection::UP);
+				return FromPosition;
+			}
+		}
+
 		NextPosition.y += 1.0f;
 
 		// 충돌 체크
@@ -246,4 +319,18 @@ void RicochetLevel::SetGameClear(const Vector2F& PlayerPosition)
 void RicochetLevel::SetGameOver()
 {
 	isGameOver = true;
+}
+
+bool RicochetLevel::IsOnTrap(const Vector2F& PlayerPosition)
+{
+	for (Actor* const actor : actors)
+	{
+		// 충돌
+		if (actor->GetPosition() == PlayerPosition && actor->As<Trap>())
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

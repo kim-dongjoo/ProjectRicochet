@@ -4,11 +4,15 @@
 #include "Input.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 MenuLevel::MenuLevel()
 {
+	// ReadASCIIArtFile("TitleImage.txt");
+
 	// 메뉴 아이템 추가
-	items.emplace_back(new MenuItem("Resume Game", []() {  Game::GetGame().ToggledMenu(); }));
+	items.emplace_back(new MenuItem("Start Game", []() {  Game::GetGame().ToggledMenu(); }));
 
 	items.emplace_back(new MenuItem("Quit Game", []() { Game::GetGame().Quit(); }));
 
@@ -56,8 +60,6 @@ void MenuLevel::Tick(float deltaTime)
 		// 메뉴 인덱스 초기화
 		currentIndex = 0;
 	}
-
-
 }
 
 void MenuLevel::Render()
@@ -68,7 +70,7 @@ void MenuLevel::Render()
 	Utils::SetConsolePosition({ 0, 0 });
 	Utils::SetConsoleTextColor(static_cast<WORD>(DeselectedColor));
 
-	std::cout << "SokobanGame\n\n";
+	std::cout << "Skate Boarder\n\n";
 
 	// 메뉴 아이템 렌더링
 	for (int idx = 0; idx < length; idx++)
@@ -85,3 +87,35 @@ void MenuLevel::Render()
 
 	}
 }
+
+void MenuLevel::ReadASCIIArtFile(const char* filename)
+{
+		//// 최종 애셋 경로 완성
+		//char filepath[256] = {};
+		//sprintf_s(filepath, 256, "../Contents/%s", filename);
+
+		//FILE* file = nullptr;
+		//fopen_s(&file, filepath, "rt");
+
+		//// 예외 처리
+		//if (file == nullptr)
+		//{
+		//	std::cout << "아스키 아트 파일 읽기 실패 (" << filename << ")" << std::endl;
+		//	__debugbreak();
+		//	return;
+		//}
+
+		std::ifstream file("../Contents/TitleImage.txt");
+		std::string line;
+
+		if (file.is_open()) {
+			while (std::getline(file, line)) {
+				std::cout << line << std::endl; // 각 줄을 콘솔에 출력
+			}
+			file.close();
+		}
+		else {
+			std::cerr << "Error: Could not open file." << std::endl;
+		}
+
+	}

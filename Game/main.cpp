@@ -8,12 +8,8 @@ int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	//_CrtSetBreakAlloc(321);
+	Game RicochetGame;
 
-	Game sokobanGame;
-	// Engine engine;
-	// engine.AddLevel(new DemoLevel());
-	// sokobanGame.AddLevel(new MenuLevel());
-	// sokobanGame.AddLevel(new SokobanLevel());
-	sokobanGame.Run();
+	// RicochetGame.AddLevel(new MenuLevel());
+	RicochetGame.Run();
 }
