@@ -12,6 +12,8 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float deltaTime) override;
 
+	const float GetMoveSpeed();
+
 private:
 	EDirection MoveDirection = EDirection::None;
 

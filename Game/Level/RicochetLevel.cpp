@@ -154,7 +154,7 @@ void RicochetLevel::ReadMapFile(const char* filename)
 
 }
 
-Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, const Vector2F& ToPosition, EDirection MoveDirection)
+Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, const Vector2F& ToPosition, EDirection MoveDirection, float DeltaTime)
 {
 	Vector2F NextPosition = { floor(FromPosition.x), floor(FromPosition.y) };
 
@@ -173,10 +173,10 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	if (MoveDirection == EDirection::RIGHT)
 	{
 		// 이동 벽 충돌 체크
-		if (movingWall && movingWall->GetPosition().y == FromPosition.y)
+		if (!player->GetIsBounced() && movingWall && movingWall->GetPosition().y == FromPosition.y)
 		{
 			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
-			if (!(movingWall->GetPosition().x + 1.0f <= FromPosition.x || movingWall->GetPosition().x >= ToPosition.x))
+			if (!(movingWall->GetPosition().x + movingWall->GetMoveSpeed() * DeltaTime < FromPosition.x || movingWall->GetPosition().x > ToPosition.x))
 			{
 				player->SetMoveDirection(EDirection::LEFT);
 				return FromPosition;
@@ -207,16 +207,16 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	else if (MoveDirection == EDirection::LEFT)
 	{
 		// 이동 벽 충돌 체크
-		if (movingWall && movingWall->GetPosition().y == FromPosition.y)
+		if (!player->GetIsBounced() && movingWall && movingWall->GetPosition().y == FromPosition.y)
 		{
 			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
-			if (!(movingWall->GetPosition().x + 1.0f <= ToPosition.x || movingWall->GetPosition().x >= FromPosition.x))
+			if (!(movingWall->GetPosition().x + movingWall->GetMoveSpeed() * DeltaTime < ToPosition.x || movingWall->GetPosition().x > FromPosition.x))
 			{
 				player->SetMoveDirection(EDirection::RIGHT);
 				return FromPosition;
 			}
 		}
-		
+
 		NextPosition.x -= 1.0f;
 
 		// 충돌 체크
@@ -241,10 +241,10 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	else if (MoveDirection == EDirection::UP)
 	{
 		// 이동 벽 충돌 체크
-		if (movingWall && movingWall->GetPosition().x == FromPosition.x)
+		if (!player->GetIsBounced() && movingWall && movingWall->GetPosition().x == FromPosition.x)
 		{
 			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
-			if (!( movingWall->GetPosition().y + 1.0f <= ToPosition.y || movingWall->GetPosition().y  >= FromPosition.y))
+			if (!(movingWall->GetPosition().y + movingWall->GetMoveSpeed() * DeltaTime < ToPosition.y || movingWall->GetPosition().y  > FromPosition.y))
 			{
 				player->SetMoveDirection(EDirection::DOWN);
 				return FromPosition;
@@ -274,11 +274,29 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	}
 	else if (MoveDirection == EDirection::DOWN)
 	{
+		//====================================================
+		Vector2F FromPositionRef = FromPosition;
+		Vector2F Diff = FromPositionRef - movingWall->GetPosition();
+
+		float length = sqrtf(Diff.x * Diff.x + Diff.y * Diff.y);
+
+		bool firstCheckResult = (movingWall->GetPosition().y <= ToPosition.y);
+		bool secondCheckResult = ((movingWall->GetPosition().y + (movingWall->GetMoveSpeed() * DeltaTime)) >= FromPosition.y);
+
+		if (length <= 1.0f)
+		{
+			char debugMessage[100] = {};
+			sprintf_s(debugMessage, 100, "PlayerY: %f | WallY: %f | FirstResult: %s | SecondResult: %s \n",
+				FromPosition.y, movingWall->GetPosition().y + (movingWall->GetMoveSpeed() * DeltaTime), (firstCheckResult ? "True" : "False"), (secondCheckResult ? "True" : "False"));
+			OutputDebugStringA(debugMessage);
+		}
+		// ===============================================
+
 		// 이동 벽 충돌 체크
-		if (movingWall && movingWall->GetPosition().x == FromPosition.x)
+		if (!player->GetIsBounced() && movingWall && movingWall->GetPosition().x == FromPosition.x)
 		{
 			// 터널링 완화를 위해 좌표가 아닌 0-1.0f의범위로 AABB 체크
-			if (!(movingWall->GetPosition().y >= ToPosition.y || movingWall->GetPosition().y + 1.0f <= FromPosition.y))
+			if (!(movingWall->GetPosition().y > ToPosition.y || movingWall->GetPosition().y + movingWall->GetMoveSpeed() * DeltaTime < FromPosition.y))
 			{
 				player->SetMoveDirection(EDirection::UP);
 				return FromPosition;

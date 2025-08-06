@@ -107,3 +107,8 @@ void MovingWall::Tick(float deltaTime)
 	}
 
 }
+
+const float MovingWall::GetMoveSpeed()
+{
+	return MoveSpeed;
+}

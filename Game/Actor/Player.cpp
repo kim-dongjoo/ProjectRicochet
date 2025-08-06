@@ -64,7 +64,7 @@ void Player::Tick(float deltaTime)
 		if (MoveDirection == EDirection::RIGHT)
 		{
 			Vector2F TargetPosition = Vector2F((GetPosition().x + MoveDistance), GetPosition().y);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::RIGHT);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::RIGHT, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			if(TargetPosition == ResultPosition)
@@ -73,20 +73,25 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 이동 벽에 충돌하지 않은 경우
-				if (!(MoveDirection == EDirection::LEFT))
+				// 이동 벽에 충돌한 경우
+				if (MoveDirection == EDirection::LEFT)
+				{
+					IsBounced = true;
+				}
+				else
 				{
 					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
 					SetPosition(ResultPosition);
 					MoveDirection = EDirection::None;
 					IsMoving = false;
+					IsBounced = false;
 				}
 			}
 		}
 		else if (MoveDirection == EDirection::LEFT)
 		{
 			Vector2F TargetPosition = Vector2F(GetPosition().x - MoveDistance, GetPosition().y);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::LEFT);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::LEFT, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			if (TargetPosition == ResultPosition)
@@ -95,20 +100,25 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 이동 벽에 충돌하지 않은 경우
-				if (!(MoveDirection == EDirection::RIGHT))
+				// 이동 벽에 충돌한 경우
+				if (MoveDirection == EDirection::RIGHT)
+				{
+					IsBounced = true;
+				}
+				else
 				{
 					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
 					SetPosition(ResultPosition);
 					MoveDirection = EDirection::None;
 					IsMoving = false;
+					IsBounced = false;
 				}
 			}
 		}
 		else if (MoveDirection == EDirection::UP)
 		{
 			Vector2F TargetPosition = Vector2F(GetPosition().x, GetPosition().y - MoveDistance);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::UP);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::UP, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			if (TargetPosition == ResultPosition)
@@ -117,20 +127,25 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 이동 벽에 충돌하지 않은 경우
-				if (!(MoveDirection == EDirection::DOWN))
+				// 이동 벽에 충돌한 경우
+				if (MoveDirection == EDirection::DOWN)
+				{
+					IsBounced = true;
+				}
+				else
 				{
 					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
 					SetPosition(ResultPosition);
 					MoveDirection = EDirection::None;
 					IsMoving = false;
+					IsBounced = false;
 				}
 			}
 		}
 		else if (MoveDirection == EDirection::DOWN)
 		{
 			Vector2F TargetPosition = Vector2F(GetPosition().x, GetPosition().y + MoveDistance);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::DOWN);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::DOWN, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			if (TargetPosition == ResultPosition)
@@ -139,13 +154,18 @@ void Player::Tick(float deltaTime)
 			// 쿼리에서 충돌이 있었다면 정지 상태로 변경
 			if (!(TargetPosition == ResultPosition))
 			{
-				// 이동 벽에 충돌하지 않은 경우
-				if (!(MoveDirection == EDirection::UP))
+				// 이동 벽에 충돌한 경우
+				if (MoveDirection == EDirection::UP)
+				{
+					IsBounced = true;
+				}
+				else
 				{
 					// 목표 위치와 쿼리 결과 위치가 같지 않거나 위치 변화가 없다면 벽에 막힌 것이므로 이동 플래그를 정지로 변경
 					SetPosition(ResultPosition);
 					MoveDirection = EDirection::None;
 					IsMoving = false;
+					IsBounced = false;
 				}
 			}
 		}
@@ -157,7 +177,7 @@ void Player::Tick(float deltaTime)
 		if (Input::GetInput().GetKeyDown(VK_RIGHT))
 		{
 			Vector2F TargetPosition = Vector2F((GetPosition().x + MoveDistance), GetPosition().y);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::RIGHT);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::RIGHT, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			// 이동 플래그를 이동 중으로 변경
@@ -181,7 +201,7 @@ void Player::Tick(float deltaTime)
 		if (Input::GetInput().GetKeyDown(VK_LEFT))
 		{
 			Vector2F TargetPosition = Vector2F(GetPosition().x - MoveDistance, GetPosition().y);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::LEFT);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::LEFT, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			// 이동 플래그를 이동 중으로 변경
@@ -205,7 +225,7 @@ void Player::Tick(float deltaTime)
 		if (Input::GetInput().GetKeyDown(VK_UP))
 		{
 			Vector2F TargetPosition = Vector2F(GetPosition().x, GetPosition().y - MoveDistance);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::UP);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::UP, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			// 이동 플래그를 이동 중으로 변경
@@ -229,7 +249,7 @@ void Player::Tick(float deltaTime)
 		if (Input::GetInput().GetKeyDown(VK_DOWN))
 		{
 			Vector2F TargetPosition = Vector2F(GetPosition().x, GetPosition().y + MoveDistance);
-			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::DOWN);
+			Vector2F ResultPosition = EQInterface->FindReachablePosition(GetPosition(), TargetPosition, EDirection::DOWN, deltaTime);
 
 			// 쿼리에서 충돌이 없었다면 원래 목표 위치로 이동한다.
 			// 이동 플래그를 이동 중으로 변경
@@ -275,4 +295,9 @@ void Player::Render()
 void Player::SetMoveDirection(EDirection MoveDirection)
 {
 	this->MoveDirection = MoveDirection;
+}
+
+bool Player::GetIsBounced() const
+{
+	return IsBounced;
 }
