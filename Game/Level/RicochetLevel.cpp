@@ -113,7 +113,7 @@ void RicochetLevel::ReadMapFile(const char* filename)
 		case '.':
 			SpawnActor(new Ground(position));
 			break;
-		case 'R':
+		case 'S':
 			// 땅도 같이 생성
 			SpawnActor(new Ground(position));
 			SpawnActor(new Player(position));
@@ -310,10 +310,15 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	return	FromPosition;
 }
 
-void RicochetLevel::SetGameClear(const Vector2F& PlayerPosition)
+bool RicochetLevel::SetGameClear(const Vector2F& PlayerPosition)
 {
 	if (PlayerPosition == GoalPosition)
+	{
 		isGameClear = true;
+		return true;
+	}
+
+	return false;
 }
 
 void RicochetLevel::SetGameOver()

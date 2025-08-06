@@ -2,7 +2,7 @@
 #include <algorithm>
 
 MovingWall::MovingWall(const Vector2F& StartPosition, const Vector2F& EndPosition, EDirection MoveDirection)
-	: Actor('#', Color::White, StartPosition)
+	: Actor('E', Color::Red, StartPosition)
 	, MoveDirection(MoveDirection)
 	, StartDirection(MoveDirection)
 	, PatrolStartPosition(StartPosition)

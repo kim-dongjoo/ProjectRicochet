@@ -38,6 +38,8 @@ public:
 	virtual void Tick(float deltaTime) override;
 	virtual void Render() override;
 
+	void ChangeMenuItemText(int ItemIndex, const char* ItemText);
+
 private:
 	void ReadASCIIArtFile(const char* filename);
 

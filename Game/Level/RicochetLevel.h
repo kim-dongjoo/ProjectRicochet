@@ -16,7 +16,7 @@ public:
 
 	//============== IEnvironmentQuery을(를) 통해 상속됨======================
 	virtual Vector2F FindReachablePosition(const Vector2F& FromPosition, const Vector2F& ToPosition, EDirection MoveDirection) override;
-	virtual void SetGameClear(const Vector2F& PlayerPosition) override;
+	virtual bool SetGameClear(const Vector2F& PlayerPosition) override;
 	virtual void SetGameOver() override;
 	virtual bool IsOnTrap(const Vector2F& PlayerPosition) override;
 	// =================================================================

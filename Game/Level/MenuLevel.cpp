@@ -9,7 +9,7 @@
 
 MenuLevel::MenuLevel()
 {
-	// ReadASCIIArtFile("TitleImage.txt");
+	ReadASCIIArtFile("TitleImage.txt");
 
 	// 메뉴 아이템 추가
 	items.emplace_back(new MenuItem("Start Game", []() {  Game::GetGame().ToggledMenu(); }));
@@ -70,7 +70,7 @@ void MenuLevel::Render()
 	Utils::SetConsolePosition({ 0, 0 });
 	Utils::SetConsoleTextColor(static_cast<WORD>(DeselectedColor));
 
-	std::cout << "Skate Boarder\n\n";
+	std::cout << "==[Top Skater]==\n\n";
 
 	// 메뉴 아이템 렌더링
 	for (int idx = 0; idx < length; idx++)
@@ -84,7 +84,18 @@ void MenuLevel::Render()
 
 		// 메뉴 텍스트 출력
 		std::cout << items[idx]->menuText << "\n";
+	}
+}
 
+void MenuLevel::ChangeMenuItemText(int ItemIndex, const char* ItemText)
+{
+	if (items[ItemIndex]->menuText != ItemText)
+	{
+		SafeDeleteArray(items[ItemIndex]->menuText);
+
+		size_t length = strlen(ItemText);
+		items[ItemIndex]->menuText = new char[length + 1];
+		strcpy_s(items[ItemIndex]->menuText, length + 1, ItemText);
 	}
 }
 
@@ -108,11 +119,17 @@ void MenuLevel::ReadASCIIArtFile(const char* filename)
 		std::ifstream file("../Contents/TitleImage.txt");
 		std::string line;
 
+		SHORT PositionY = 0;
+
 		if (file.is_open()) {
 			while (std::getline(file, line)) {
+				Utils::SetConsolePosition({ 5, PositionY });
 				std::cout << line << std::endl; // 각 줄을 콘솔에 출력
+				PositionY++;
 			}
 			file.close();
+
+			Utils::SetConsolePosition({ 0, 0 });
 		}
 		else {
 			std::cerr << "Error: Could not open file." << std::endl;

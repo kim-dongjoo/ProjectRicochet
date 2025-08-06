@@ -2,7 +2,8 @@
 
 #include "Engine.h"
 
-class Level;
+class MenuLevel;
+class RicochetLevel;
 
 class Game : public Engine
 {
@@ -20,12 +21,13 @@ public:
 private:
 
 	// 메뉴 레벨
-	Level* menuLevel = nullptr;
+	MenuLevel* menuLevel = nullptr;
 
-	Level* backLevel = nullptr;
+	// 게임 레벨(RicochetLevel) 저장용 포인터
+	RicochetLevel* backLevel = nullptr;
 
 	// 현재 메뉴를 보여주고 있는지를 나타냄
-	bool showMenu = false;
+	bool showMenu = true;
 
 	static Game* instance;
 

@@ -9,7 +9,7 @@ public:
 	// 이동 동선에서 가장 멀리 있는 위치를 반환
 	virtual Vector2F FindReachablePosition(const Vector2F& FromPosition, const Vector2F& ToPosition, EDirection MoveDirection) = 0;
 
-	virtual void SetGameClear(const Vector2F& PlayerPosition) = 0;
+	virtual bool SetGameClear(const Vector2F& PlayerPosition) = 0;
 
 	virtual void SetGameOver() = 0;
 

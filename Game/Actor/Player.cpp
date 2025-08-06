@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-Player::Player(const Vector2F& position) : Actor('R', Color::Green, position), MoveDirection(EDirection::None)
+Player::Player(const Vector2F& position) : Actor('S', Color::Green, position), MoveDirection(EDirection::None)
 {
 	SetRenderSortingOrder(3);
 }
@@ -33,14 +33,14 @@ void Player::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 
-	if(!MoveCount && MoveDirection == EDirection::None)
-		EQInterface->SetGameOver();
+	if (!MoveCount && MoveDirection == EDirection::None)
+	{
+		if(!EQInterface->SetGameClear(GetPosition()))
+			EQInterface->SetGameOver();
+	}
 
 	if (Input::GetInput().GetKeyDown(VK_ESCAPE))
 	{
-		// Engine::GetEngine().Quit();
-		// QuitGame();
-
 		Game::GetGame().ToggledMenu();
 		return;
 	}
@@ -266,7 +266,10 @@ void Player::Render()
 	Utils::SetConsolePosition({ 0, 25 });
 	Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
 
-	std::cout << "남은 이동 횟수: " << MoveCount;
+	// 이전 렌더된 MoveCount 값을 지워준다.
+	// 자릿수가 바뀔 때 이전 값이 남아있는 문제 처리
+	std::cout << "                                        ";
+	std::cout << "\r" << "남은 이동 횟수: " << MoveCount;
 }
 
 void Player::SetMoveDirection(EDirection MoveDirection)

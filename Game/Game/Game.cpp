@@ -10,11 +10,16 @@ Game::Game()
 	instance = this;
 
 	// 메인 레벨 추가
-	AddLevel(new RicochetLevel());
+	// AddLevel(new RicochetLevel());
 	// AddLevel(new MenuLevel());
 
-	// 메뉴 레벨 생성
 	menuLevel = new MenuLevel();
+	backLevel = new RicochetLevel();
+
+	AddLevel(menuLevel);
+
+	// 메뉴 레벨 생성
+	//menuLevel = new MenuLevel();
 }
 
 Game::~Game()
@@ -27,23 +32,18 @@ void Game::ToggledMenu()
 	// 화면 정리
 	system("cls");
 
-	// 토글 처리
-	showMenu = !showMenu;
-
 	if (showMenu)
 	{
-		// 게임 레벨을 뒤로 밀기
-		backLevel = mainLevel;
-
-		// 메뉴 레벨을 메인 레벨로 설정
-		mainLevel = menuLevel;
+		mainLevel = backLevel;
 	}
 	else
 	{
-		// 게임 레벨을 메인 레벨로 설정
-		mainLevel = backLevel;
-
+		menuLevel->ChangeMenuItemText(0, "Resume Game");
+		mainLevel = menuLevel;
 	}
+
+	// 토글 처리
+	showMenu = !showMenu;
 
 }
 
