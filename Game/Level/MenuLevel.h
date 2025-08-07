@@ -39,12 +39,18 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Render() override;
 
+	// BeginPlay 호출 여부 확인
+	inline bool HasBeganPlay() const { return hasBeganPlay; }
+
 	void ChangeMenuItemText(int ItemIndex, const char* ItemText);
 
 private:
 	void ReadASCIIArtFile(const char* filename);
 
 private:
+	// BeginPlay가 호출 되었는지 확인
+	bool hasBeganPlay = false;
+
 	// 현재 선택된 아이템의 인덱스
 	int currentIndex = 0;
 

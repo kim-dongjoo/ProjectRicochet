@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 
 MenuLevel::MenuLevel()
 {
@@ -65,6 +67,14 @@ void MenuLevel::Tick(float deltaTime)
 void MenuLevel::BeginPlay()
 {
 	super::BeginPlay();
+
+	if (!hasBeganPlay)
+	{
+		PlaySound(TEXT("../Contents/BGM_Menu"), 0, SND_FILENAME | SND_ASYNC);
+	}
+
+	hasBeganPlay = true;
+
 }
 
 void MenuLevel::Render()

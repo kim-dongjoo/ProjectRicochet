@@ -11,6 +11,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 
 RicochetLevel::RicochetLevel()
 {
@@ -36,6 +38,13 @@ void RicochetLevel::Tick(float DeltaTime)
 void RicochetLevel::BeginPlay()
 {
 	super::BeginPlay();
+
+	if (!hasBeganPlay)
+	{
+		PlaySound(TEXT("../Contents/BGM_Game"), 0, SND_FILENAME | SND_ASYNC);
+	}
+
+	hasBeganPlay = true;
 }
 
 void RicochetLevel::Render()

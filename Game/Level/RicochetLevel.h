@@ -15,6 +15,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Render() override;
 
+	// BeginPlay 호출 여부 확인
+	inline bool HasBeganPlay() const { return hasBeganPlay; }
+
 	//============== IEnvironmentQuery을(를) 통해 상속됨======================
 	virtual Vector2F FindReachablePosition(const Vector2F& FromPosition, const Vector2F& ToPosition, EDirection MoveDirection, float DeltaTime) override;
 	virtual bool SetGameClear(const Vector2F& PlayerPosition) override;
@@ -31,6 +34,9 @@ private:
 	void ReadMapFile(const char* filename);
 
 private:
+	// BeginPlay가 호출 되었는지 확인
+	bool hasBeganPlay = false;
+
 	// 게임 클리어 여부 확인 변수
 	bool isGameClear = false;
 
