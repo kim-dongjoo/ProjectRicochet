@@ -12,6 +12,7 @@ public:
 	RicochetLevel();
 
 	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
 	virtual void Render() override;
 
 	//============== IEnvironmentQuery을(를) 통해 상속됨======================
@@ -20,6 +21,11 @@ public:
 	virtual void SetGameOver() override;
 	virtual bool IsOnTrap(const Vector2F& PlayerPosition) override;
 	// =================================================================
+
+	// 게임 오버 후 메뉴로 돌아가는 함수
+	void ReturnToMainMenu();
+
+	void LoadNextMap();
 
 private:
 	void ReadMapFile(const char* filename);

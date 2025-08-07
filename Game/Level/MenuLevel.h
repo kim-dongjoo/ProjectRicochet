@@ -36,6 +36,7 @@ public:
 	~MenuLevel();
 
 	virtual void Tick(float deltaTime) override;
+	virtual void BeginPlay() override;
 	virtual void Render() override;
 
 	void ChangeMenuItemText(int ItemIndex, const char* ItemText);

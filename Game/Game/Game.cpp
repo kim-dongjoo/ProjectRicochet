@@ -47,6 +47,38 @@ void Game::ToggledMenu()
 
 }
 
+void Game::OpenMainMenuLevel()
+{
+	// 화면 정리
+	system("cls");
+
+	SafeDelete(menuLevel);
+	menuLevel = new MenuLevel();
+	mainLevel = menuLevel;
+	showMenu = true;
+
+	// 기존 게임 레벨 삭제 후 재생성
+	SafeDelete(backLevel);
+	backLevel = new RicochetLevel();
+}
+
+void Game::OpenNextLevel()
+{
+	MapLevel++;
+
+	system("cls");
+
+	SafeDelete(backLevel);
+	backLevel = new RicochetLevel();
+
+	mainLevel = backLevel;
+}
+
+const int Game::GetMapLevel()
+{
+	return MapLevel;
+}
+
 void Game::CleanUp()
 {
 	if (showMenu)

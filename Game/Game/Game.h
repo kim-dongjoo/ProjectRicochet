@@ -18,6 +18,13 @@ public:
 
 	static Game& GetGame();
 
+	// 게임 오버 후 메뉴 다시 여는 함수
+	void OpenMainMenuLevel();
+
+	void OpenNextLevel();
+
+	const int GetMapLevel();
+
 private:
 
 	// 메뉴 레벨
@@ -29,6 +36,8 @@ private:
 	// 현재 메뉴를 보여주고 있는지를 나타냄
 	bool showMenu = true;
 
-	static Game* instance;
+	// 게임 맵 레벨
+	int MapLevel = 1;
 
+	static Game* instance;
 };

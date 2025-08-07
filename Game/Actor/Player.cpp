@@ -48,6 +48,10 @@ void Player::Tick(float deltaTime)
 	// 입력 처리 
 	float MoveDistance = MoveSpeed * deltaTime * 5;
 
+	// 이동 방향 저장
+	EDirection CurrentDirection = MoveDirection;
+	Vector2F CurrentPosition = GetPosition();
+
 	// ===================================================================
 	// IsMoving = true
 	// 전 프레임에서 이동 중이었다면 계속 이동을 시도한다.
@@ -187,14 +191,23 @@ void Player::Tick(float deltaTime)
 				MoveDirection = EDirection::RIGHT;
 				IsMoving = true;
 			}
-				
-			// 쿼리에서 충돌이 있었다면
-			if (!(TargetPosition == ResultPosition))
+			else // 쿼리에서 충돌이 있었다면
 			{
 				SetPosition(ResultPosition);
+
+				// 이동 벽에 의해 방향이 변한 경우가 아니라면 정지로 변경
+				if (CurrentDirection == MoveDirection)
+				{
+					IsMoving = false;
+				}
 			}
 
-			MoveCount--;
+			// 이동에 실패했다면 이동 횟수 차감하지 않음
+			if (!(ResultPosition == CurrentPosition))
+			{
+				MoveCount--;
+			}
+
 			return;
 		}
 
@@ -211,14 +224,23 @@ void Player::Tick(float deltaTime)
 				MoveDirection = EDirection::LEFT;
 				IsMoving = true;
 			}
-
-			// 쿼리에서 충돌이 있었다면
-			if (!(TargetPosition == ResultPosition))
+			else // 쿼리에서 충돌이 있었다면
 			{
 				SetPosition(ResultPosition);
+
+				// 이동 벽에 의해 방향이 변한 경우가 아니라면 정지로 변경
+				if (CurrentDirection == MoveDirection)
+				{
+					IsMoving = false;
+				}
+			}
+			
+			// 이동에 실패했다면 이동 횟수 차감하지 않음
+			if (!(ResultPosition == CurrentPosition))
+			{
+				MoveCount--;
 			}
 
-			MoveCount--;
 			return;
 		}
 
@@ -235,14 +257,23 @@ void Player::Tick(float deltaTime)
 				MoveDirection = EDirection::UP;
 				IsMoving = true;
 			}
-
-			// 쿼리에서 충돌이 있었다면
-			if (!(TargetPosition == ResultPosition))
+			else // 쿼리에서 충돌이 있었다면
 			{
 				SetPosition(ResultPosition);
+
+				// 이동 벽에 의해 방향이 변한 경우가 아니라면 정지로 변경
+				if (CurrentDirection == MoveDirection)
+				{
+					IsMoving = false;
+				}
 			}
 
-			MoveCount--;
+			// 이동에 실패했다면 이동 횟수 차감하지 않음
+			if (!(ResultPosition == CurrentPosition))
+			{
+				MoveCount--;
+			}
+
 			return;
 		}
 
@@ -259,14 +290,23 @@ void Player::Tick(float deltaTime)
 				MoveDirection = EDirection::DOWN;
 				IsMoving = true;
 			}
-
-			// 쿼리에서 충돌이 있었다면
-			if (!(TargetPosition == ResultPosition))
+			else // 쿼리에서 충돌이 있었다면
 			{
 				SetPosition(ResultPosition);
+
+				// 이동 벽에 의해 방향이 변한 경우가 아니라면 정지로 변경
+				if (CurrentDirection == MoveDirection)
+				{
+					IsMoving = false;
+				}
 			}
 
-			MoveCount--;
+			// 이동에 실패했다면 이동 횟수 차감하지 않음
+			if (!(ResultPosition == CurrentPosition))
+			{
+				MoveCount--;
+			}
+
 			return;
 		}
 	}

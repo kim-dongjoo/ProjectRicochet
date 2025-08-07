@@ -62,6 +62,11 @@ void MenuLevel::Tick(float deltaTime)
 	}
 }
 
+void MenuLevel::BeginPlay()
+{
+	super::BeginPlay();
+}
+
 void MenuLevel::Render()
 {
 	super::Render();

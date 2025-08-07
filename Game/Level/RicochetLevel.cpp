@@ -1,4 +1,5 @@
 #include "RicochetLevel.h"
+#include "Game/Game.h"
 #include "Math/Vector2F.h"
 #include "Actor/Player.h"
 #include "Actor/Wall.h"
@@ -7,13 +8,21 @@
 #include "Actor/Trap.h"
 #include "Actor/Goal.h"
 #include "Utils/Utils.h"
-#include <cmath>
 
+#include <cmath>
 #include <iostream>
 
 RicochetLevel::RicochetLevel()
 {
-	ReadMapFile("Stage1.txt");
+	int mapLevel = Game::GetGame().GetMapLevel();
+
+	char filename[20] = { };
+
+	sprintf_s(filename, 20, "Stage%d.txt", mapLevel);
+
+	 ReadMapFile(filename);
+
+	// ReadMapFile("Stage1.txt");
 }
 
 void RicochetLevel::Tick(float DeltaTime)
@@ -22,6 +31,11 @@ void RicochetLevel::Tick(float DeltaTime)
 		return;
 
 	super::Tick(DeltaTime);
+}
+
+void RicochetLevel::BeginPlay()
+{
+	super::BeginPlay();
 }
 
 void RicochetLevel::Render()
@@ -34,6 +48,8 @@ void RicochetLevel::Render()
 		Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
 
 		std::cout << "==== Game Clear! ====";
+
+		LoadNextMap();
 	}
 
 	if (isGameOver)
@@ -42,6 +58,8 @@ void RicochetLevel::Render()
 		Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
 
 		std::cout << "==== Game Over! ====";
+
+		ReturnToMainMenu();
 	}
 
 }
@@ -274,24 +292,6 @@ Vector2F RicochetLevel::FindReachablePosition(const Vector2F& FromPosition, cons
 	}
 	else if (MoveDirection == EDirection::DOWN)
 	{
-		//====================================================
-		Vector2F FromPositionRef = FromPosition;
-		Vector2F Diff = FromPositionRef - movingWall->GetPosition();
-
-		float length = sqrtf(Diff.x * Diff.x + Diff.y * Diff.y);
-
-		bool firstCheckResult = (movingWall->GetPosition().y <= ToPosition.y);
-		bool secondCheckResult = ((movingWall->GetPosition().y + (movingWall->GetMoveSpeed() * DeltaTime)) >= FromPosition.y);
-
-		if (length <= 1.0f)
-		{
-			char debugMessage[100] = {};
-			sprintf_s(debugMessage, 100, "PlayerY: %f | WallY: %f | FirstResult: %s | SecondResult: %s \n",
-				FromPosition.y, movingWall->GetPosition().y + (movingWall->GetMoveSpeed() * DeltaTime), (firstCheckResult ? "True" : "False"), (secondCheckResult ? "True" : "False"));
-			OutputDebugStringA(debugMessage);
-		}
-		// ===============================================
-
 		// 이동 벽 충돌 체크
 		if (!player->GetIsBounced() && movingWall && movingWall->GetPosition().x == FromPosition.x)
 		{
@@ -356,4 +356,36 @@ bool RicochetLevel::IsOnTrap(const Vector2F& PlayerPosition)
 	}
 
 	return false;
+}
+
+void RicochetLevel::ReturnToMainMenu()
+{
+	clock_t start = clock();
+
+	while(true)
+	{
+		clock_t end = clock();
+		double time = double(end - start) / CLOCKS_PER_SEC; //초단위 변환
+
+		if (time >= 2.0f)
+			break;
+	}
+
+	Game::GetGame().OpenMainMenuLevel();
+}
+
+void RicochetLevel::LoadNextMap()
+{
+	clock_t start = clock();
+
+	while (true)
+	{
+		clock_t end = clock();
+		double time = double(end - start) / CLOCKS_PER_SEC; //초단위 변환
+
+		if (time >= 2.0f)
+			break;
+	}
+
+	Game::GetGame().OpenNextLevel();
 }

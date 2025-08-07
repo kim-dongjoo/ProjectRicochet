@@ -30,7 +30,7 @@ private:
 	// 튕겼는지
 	bool IsBounced = false;
 
-	int MoveCount = 12;
+	int MoveCount = 25;
 
 	// 환경 쿼리 인터페이스
 	class IEnvironmentQuery* EQInterface = nullptr;
